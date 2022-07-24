@@ -10,10 +10,12 @@
         {
             //make sure the staging url is used in links
             add_filter( 'post_link', [ $this, 'internal_link_to_staging'] , 10, 3 );
-            add_filter( 'page_link', [ $this, 'internal_link_to_staging'], 10, 3 );
+            add_filter( 'page_link', [ $this, 'internal_link_to_staging'] , 10, 3 );
 
             //replace url in the_content on dev environment
-            add_filter( 'the_content', [ $this, 'filter_the_content_in_the_main_loop' ], 1 );
+            //add_filter( 'the_content', [ $this, 'filter_the_content_in_the_main_loop' ], 1 );
+
+            
         }
 
         /**
@@ -42,11 +44,14 @@
          * @return string
          */
         public function internal_link_to_staging(  $url, $post, $leavename ) 
-        {
+        { 
             if( isset( $_ENV['ENVIRONMENT'] ) && $_ENV['ENVIRONMENT'] == 'DEV' && isset( $_ENV['STAGING'] ) ){
-                $url = $_ENV['STAGING'] . wp_make_link_relative($url);
+                $url = wp_make_link_relative($url);
             }
-            
+        
             return $url;
         }
+
+
+
     }
