@@ -1,5 +1,6 @@
 <?php
-namespace AlpackitConnect\Contracts;
+namespace Alpackit\Connect\Contracts;
+
 
 abstract class AssetLoader extends StaticInstance
 {
@@ -22,5 +23,17 @@ abstract class AssetLoader extends StaticInstance
      */
     abstract public function load();
 
+
+    /**
+     * Return the path to an asset
+     *
+     * @param string $file
+     * @return void
+     */
+    public function path( $file )
+    {
+        $base = \Alpackit\Connect\PluginIgniter::get_plugin_url();
+        return $base . 'assets'. DS . 'dist' . DS . $file;
+    }
 
 } 

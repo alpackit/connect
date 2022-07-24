@@ -67,18 +67,37 @@ if (!class_exists('PluginIgniter')) {
             $path = __DIR__ . DS . '/languages/';
             load_plugin_textdomain( 'alpackit', false, $path );
 
-            //require the vendors:
-            //require( __DIR__ . DS . 'vendor' . DS . 'autoload.php' );
+            //get the autoloader
+            require( __DIR__ . DS . 'vendor' . DS . 'autoload.php' );
 
-            //require the autoloader:
-            require( __DIR__ . DS . 'autoloader.php');
-
-            //initiate the autoloader:
-            ( new \Alpackit\Connect\Autoloader() )->register()->load();
+            //setup the listeners
+            $this->listen();
 
             //give off the loaded hook
             do_action( 'alpackit_connect_loaded' );
 
+        }
+
+
+        /**
+         * Initiate static instances and listen to WP events
+         *
+         * @return void
+         */
+        protected function listen()
+        {
+            //set the dot env:
+			if( file_exists( trailingslashit( ABSPATH ) . '.env' ) ){
+				$dotenv = \Dotenv\Dotenv::createImmutable( ABSPATH );
+                $dotenv->load();
+            }
+
+            //Admin ui: 
+            Admin\Menu::get_instance();
+            Admin\Assets::get_instance();
+
+            //General
+            Plugins\Events::get_instance();
         }
 
         /*=============================================================*/
@@ -147,6 +166,16 @@ if (!class_exists('PluginIgniter')) {
         }
 
         /**
+         * Get the plugin url
+         *
+         * @return void
+         */
+        public static function get_plugin_url()
+        {
+            return plugin_dir_url( __FILE__ );
+        }
+
+        /**
          * Returns the directory name.
          *
          * @return string
@@ -167,4 +196,3 @@ if (!class_exists('PluginIgniter')) {
 add_action('muplugins_loaded', function(){
 	\Alpackit\Connect\PluginIgniter::get_instance();
 });
-

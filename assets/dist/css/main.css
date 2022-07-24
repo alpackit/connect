@@ -1,0 +1,58 @@
+.alpackit-container {
+  padding: 15px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  margin: 50px auto;
+  max-width: 600px;
+  width: 80%;
+}
+
+@-webkit-keyframes walk {
+  to {
+    background-position: -2177px 0;
+  }
+}
+
+@keyframes walk {
+  to {
+    background-position: -2177px 0;
+  }
+}
+.alpaca-loader {
+  width: 128px;
+  height: 128px;
+  background: url("../images/loading.png") 0 0;
+  background-color: rgb(185, 28, 28);
+  -webkit-animation: walk 1s steps(17, end) infinite;
+          animation: walk 1s steps(17, end) infinite;
+  transform: scale(0.35);
+  margin: -25px;
+}
+
+.button-wrapper {
+  display: block;
+  width: 100%;
+}
+
+.progress-list li {
+  margin-bottom: 5px;
+  color: rgb(5, 150, 105);
+}
+.progress-list li.error {
+  color: rgb(185, 28, 28);
+}
+
+.progress-bar {
+  display: block;
+  width: 100%;
+  background: rgb(239, 246, 255);
+  height: 30px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.progress-bar .inner-bar {
+  background: rgb(5, 150, 105);
+  height: 100%;
+  width: 0;
+}

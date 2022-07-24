@@ -1,0 +1,22 @@
+{
+    "name": "alpackit/connect",
+    "description": "Connect this WordPress site to Alpackit",
+    "autoload": {
+        "psr-4": {
+            "Alpackit\\Connect\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Luc Princen",
+            "email": "luc@alpackit.com"
+        },
+        {
+            "name": "Remy Bakker",
+            "email": "remy@alpackit.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    }
+}

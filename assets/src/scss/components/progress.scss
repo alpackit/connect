@@ -1,0 +1,24 @@
+.progress-list{
+    li{
+        margin-bottom: 5px;
+        color: $green;
+        &.error{
+            color: $red;
+        }
+    }
+}
+
+.progress-bar{
+    display: block;
+    width: 100%;
+    background: $blue;
+    height: 30px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    .inner-bar{
+        background: $green;
+        height: 100%;
+        width: 0;
+    }
+}

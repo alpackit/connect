@@ -1,0 +1,21 @@
+@keyframes walk {
+    to {
+        background-position: -2177px 0
+    }
+}
+
+.alpaca-loader {
+    width: 128px;
+    height: 128px;
+    background: url('../images/loading.png') 0 0;
+    background-color: rgba(185, 28, 28, 100);
+    animation: walk 1s steps(17, end) infinite;
+    transform: scale(0.35);
+    margin: -25px;
+}
+
+.button-wrapper{
+    display: block;
+    width: 100%;
+    
+}
