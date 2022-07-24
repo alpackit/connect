@@ -19,7 +19,7 @@
                 add_filter( 'option_active_plugins', [ $this, 'filter_plugins' ]);
 
                 //show non-active plugins by other users / systems here:
-                add_filter( 'all_plugins', [ $this, 'add_non_local_plugins' ]);
+                //add_filter( 'all_plugins', [ $this, 'add_non_local_plugins' ]);
             });
 
 
@@ -40,12 +40,8 @@
                 $path = WP_CONTENT_DIR . '/plugins/'.$plugin;
                 $data = get_plugin_data( $path );
 
-                $recent[ $plugin ] = [
-                    'file' => $plugin,
-                    'name' => $data['Name'],
-                    'version' => $data['Version'],
-                    'installed_by' => get_current_user_id()
-                ];
+                $recent[ $plugin ] = $data;
+                $recent[ $plugin ]['slug'] = $plugin;
             }
 
             update_option( 'recent_plugins', $recent );
@@ -107,7 +103,14 @@
          */
         public function add_non_local_plugins( $plugins )
         {
-            dd( $plugins );
+            $recent = get_option( 'recent_plugins', []);
+            foreach( $recent as $key => $plugin ){
+                if( !isset( $plugins[ $key ] ) ){
+                    $plugins[ $key ] = $plugin;
+                } 
+            }
+
+            return $plugins;
         }
 
     }
