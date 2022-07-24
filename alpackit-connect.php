@@ -98,6 +98,8 @@ if (!class_exists('PluginIgniter')) {
 
             //General
             Plugins\Events::get_instance();
+            Content\Events::get_instance();
+            
         }
 
         /*=============================================================*/
