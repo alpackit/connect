@@ -50,6 +50,9 @@ if (!class_exists('PluginIgniter')) {
 
             static::$dir_name = static::set_dir_name(__DIR__);
 
+            //check deleted:
+            $this->check_deleted();
+
             // Load plugin.
             $this->load();
         
