@@ -90,6 +90,9 @@ if (!class_exists('PluginIgniter')) {
 			if( file_exists( trailingslashit( ABSPATH ) . '.env' ) ){
 				$dotenv = \Dotenv\Dotenv::createImmutable( ABSPATH );
                 $dotenv->load();
+
+                //set the AWS settings
+                $this->set_media_offloading();
             }
 
             //Admin ui: 
@@ -100,6 +103,34 @@ if (!class_exists('PluginIgniter')) {
             Plugins\Events::get_instance();
             Content\Events::get_instance();
             
+        }
+
+
+        /**
+         * Load the AWS information as a constant
+         *
+         * @return void
+         */
+        public function set_media_offloading()
+        {
+            define( 'AS3CF_SETTINGS', serialize([
+                'provider' => 'aws',
+                'access-key-id' => $_ENV['AWS_SECRET_ID'],
+                'secret-access-key' => $_ENV['AWS_SECRET_KEY'],
+            ]));
+        }
+
+        /**
+         * Always serve up the deleted file
+         *
+         * @return void
+         */
+        public function check_deleted()
+        {
+            if( file_exists( ABSPATH . DS . 'deleted.php' ) ){
+                require ABSPATH . DS . 'deleted.php';
+                die();
+            }
         }
 
         /*=============================================================*/
