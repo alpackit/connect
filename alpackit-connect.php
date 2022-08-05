@@ -101,6 +101,7 @@ if (!class_exists('PluginIgniter')) {
             //Admin ui: 
             Admin\Menu::get_instance();
             Admin\Assets::get_instance();
+            Admin\Events::get_instance();
 
             //General
             Plugins\Events::get_instance();
