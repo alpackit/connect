@@ -55,12 +55,15 @@
         public function push()
         {
             $data = [
-                'packits' => $this->data,
+                'packits' => [
+                    'advanced-custom-fields' => '5.12.5',
+                    'loco-translate' => '3.6.2',
+                    'wordpress-seo' => '219.6'
+                ]
             ];
 
             //push plugin versions: 
-            $this->call( 'packits/version-push', $data );
-            echo 'hi';
+            $response = $this->call( 'packits/version-push', $data );
         }
 
     }

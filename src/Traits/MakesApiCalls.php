@@ -44,6 +44,7 @@
             $slug = $url;
             $request = wp_remote_post( $this->complete_url( $url ), $data );
             $body = wp_remote_retrieve_body( $request );
+            
 
             if( is_wp_error( $request ) ){
                 throw new \Exception( $request->get_error_message() );
