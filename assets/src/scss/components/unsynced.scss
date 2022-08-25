@@ -1,0 +1,39 @@
+.alpackit-update-overview{
+    display: none;
+}
+
+.packit-warning{
+    padding-bottom: 15px;
+    h3{
+        display: flex;
+
+        svg{
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-right: .5rem;
+        }
+    }
+
+    .alpackit-link-wrapper{
+        display: flex;
+        align-items: center;
+
+        button.link{ margin-left: 15px; }
+    }
+
+    .alpackit-update-overview{
+        background: #f0f0f1;
+        padding: 10px;
+    }
+}
+
+button.link{
+    border: 0;
+    background: none;
+    padding: 0;
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover{
+        color: #2271b1;
+    }
+}

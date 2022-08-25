@@ -21,7 +21,7 @@
             try{
 
                 //first, list all packits on staging, with download links:
-                $url = 'packits/list';
+                $url = 'packits/list-downloads';
                 $response = $this->call( $url );
 
                 //echo the list:

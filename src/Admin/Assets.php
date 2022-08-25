@@ -32,11 +32,7 @@
          */
         public function scripts()
         {
-            $page = $_GET['page'] ?? null;
-            $allowed = ['pull-content', 'pull-media', 'alpackit' ];
-            if( in_array( $page, $allowed ) ){
-                wp_enqueue_script( 'alpackit_script', $this->path( 'js/main.js' ), ['jquery'] );
-            }
+            wp_enqueue_script( 'alpackit_script', $this->path( 'js/main.js' ), ['jquery'] );
         }   
 
 

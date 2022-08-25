@@ -56,3 +56,41 @@
   height: 100%;
   width: 0;
 }
+
+.alpackit-update-overview {
+  display: none;
+}
+
+.packit-warning {
+  padding-bottom: 15px;
+}
+.packit-warning h3 {
+  display: flex;
+}
+.packit-warning h3 svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 0.5rem;
+}
+.packit-warning .alpackit-link-wrapper {
+  display: flex;
+  align-items: center;
+}
+.packit-warning .alpackit-link-wrapper button.link {
+  margin-left: 15px;
+}
+.packit-warning .alpackit-update-overview {
+  background: #f0f0f1;
+  padding: 10px;
+}
+
+button.link {
+  border: 0;
+  background: none;
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+button.link:hover {
+  color: #2271b1;
+}

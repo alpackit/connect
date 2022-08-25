@@ -3,6 +3,7 @@
     namespace Alpackit\Connect\Plugins;
 
     use Alpackit\Connect\Api\PluginVersionPush;
+    use Alpackit\Connect\Api\PluginVersionFetch;
     use Alpackit\Connect\Contracts\EventListener;
 
     class Events extends EventListener{
@@ -20,16 +21,14 @@
                 add_filter( 'option_active_plugins', [ $this, 'filter_plugins' ]);
 
                 
-                //trigger a version push to alpackit core:
-                if( get_option('last_alpackit_version_push', 0 ) < strtotime( '-10 hours' ) ){ 
-                    //run the logic:
-                    $version_push = new PluginVersionPush();
-                    $version_push->collect()->push();
-
-                    //save the timestamp: 
-                    update_option( 'last_alpackit_version_push', time() );
+                if( env('ALPACKIT_ENVIRONMENT') == 'LOCAL' ){
+                    $this->fetch_version_list();
+                }else if( env('ALPACKIT_ENVIRONMENT') == 'STAGING' ){
+                    $this->push_version_list();
                 }
 
+                //check for unsynced plugins and throw a notice:
+                add_action('admin_notices', [ $this, 'add_unsynced_notice' ]);
 
                 //show non-active plugins by other users / systems here:
                 //add_filter( 'all_plugins', [ $this, 'add_non_local_plugins' ]);
@@ -126,14 +125,78 @@
             return $plugins;
         }
 
+
+        public function add_unsynced_notice()
+        {
+            global $pagenow;
+            $unsynced = get_option( 'unsynced_packits', [] );
+            
+            if( !empty( $unsynced ) ){
+                if ( $pagenow == 'index.php' || $pagenow == 'update-core.php' ) {
+                    echo '<div class="notice notice-warning is-dismissible packit-warning">';
+                        echo '<h3>';
+                            echo '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3.75m-9.303 3.376C1.83 19.126 2.914 21 4.645 21h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 4.88c-.866-1.501-3.032-1.501-3.898 0L2.697 17.626zM12 17.25h.007v.008H12v-.008z" />
+                            </svg>';
+                            echo esc_html__( 'Unsynced packits', 'alpackit' );
+                        echo '</h3>';
+
+                        echo '<p>'.esc_html__( 'You have plugins that are out of sync with their versions on ', 'alpackit');
+                            echo '<a href="'.\esc_attr( env('ALPACKIT_STAGING_URL') ).'" target="_blank">Alpackit staging</a>';
+                        echo '.</p>';
+                        echo '<div class="alpackit-link-wrapper">';
+                            echo '<a href="#" class="button button-primary">'.esc_html__( 'Automatically sync them', 'alpackit').'</a>';
+                            echo '<button class="link" id="reveal-unsynced-data">'.esc_html__( 'More information', 'alpackit' ).'</a>';
+                        echo '</div>';
+                        echo '<ul class="alpackit-update-overview">';
+                            foreach( $unsynced as $packit ){
+                                echo '<li>'.$packit['name'];
+                                echo ' - <b>staging version:</b> '.$packit['pivot']->version;
+                                echo ' - <b>local version:</b> '.$packit['local_version'];
+                                echo '</li>';
+                            }
+                        echo '<ul>';
+                    echo '</div>';
+                }
+            } 
+        }
+
+
         /**
-         * Trigger an alpackit version push
+         * Fetch a list of plugin versions on staging:
          *
          * @return void
          */
-        public function trigger_version_push()
+        public function fetch_version_list()
         {
-            
+            //trigger a version push to alpackit core:
+            if( get_option('last_alpackit_version_fetch', 0 ) < strtotime( '-2 hours' ) ){ 
+                //run the logic:
+                $plugin_list = new PluginVersionFetch();
+                $plugin_list->fetch();
+
+                //save the timestamp: 
+                update_option( 'last_alpackit_version_fetch', time() );
+            }
+        }
+
+
+        /**
+         * Push a list of plugin versions to alpackit core
+         *
+         * @return void
+         */
+        public function push_version_list()
+        {
+            //trigger a version push to alpackit core:
+            if( get_option('last_alpackit_version_push', 0 ) < strtotime( '-10 hours' ) ){ 
+                //run the logic:
+                $version_push = new PluginVersionPush();
+                $version_push->collect()->push();
+
+                //save the timestamp: 
+                update_option( 'last_alpackit_version_push', time() );
+            }
         }
 
     }

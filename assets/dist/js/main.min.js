@@ -5,6 +5,10 @@ jQuery( document ).ready( function( $ ){
         $('#sync-media').on('click tap', start_media_sync );
     } 
 
+    $('#reveal-unsynced-data').on( 'click tap', function(){
+        $('.alpackit-update-overview').show();
+    });
+
 });
 
 
