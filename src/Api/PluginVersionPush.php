@@ -16,11 +16,7 @@
         public function __construct()
         {
             $data = [];
-
-            //check if we have an access token before hand:
-            if( !AccessToken::valid() ){
-                ( new AccessToken() )->request();
-            }
+            $this->check_and_set_access_token();
         }
 
         /**

@@ -2,7 +2,21 @@
 
     namespace Alpackit\Connect\Traits;
 
+    use Alpackit\Connect\Api\AccessToken;
+
     trait MakesApiCalls{
+
+        /**
+         * Check and set an access token to core
+         *
+         * @return void
+         */
+        public function check_and_set_access_token()
+        {
+            if( !AccessToken::valid() ){
+                ( new AccessToken() )->request();
+            }
+        }
 
         /**
          * Remote call the Alpackit api:
