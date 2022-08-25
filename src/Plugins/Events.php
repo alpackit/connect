@@ -2,6 +2,7 @@
 
     namespace Alpackit\Connect\Plugins;
 
+    use Alpackit\Connect\Api\PluginVersionPush;
     use Alpackit\Connect\Contracts\EventListener;
 
     class Events extends EventListener{
@@ -17,6 +18,18 @@
 
                 //don't deactivate non-existing plugins on plugins.php
                 add_filter( 'option_active_plugins', [ $this, 'filter_plugins' ]);
+
+                
+                //trigger a version push to alpackit core:
+                if( get_option('last_alpackit_version_push', 0 ) < strtotime( '-10 hours' ) ){ 
+                    //run the logic:
+                    $version_push = new PluginVersionPush();
+                    $version_push->collect()->push();
+
+                    //save the timestamp: 
+                    update_option( 'last_alpackit_version_push', time() );
+                }
+
 
                 //show non-active plugins by other users / systems here:
                 //add_filter( 'all_plugins', [ $this, 'add_non_local_plugins' ]);
@@ -111,6 +124,16 @@
             }
 
             return $plugins;
+        }
+
+        /**
+         * Trigger an alpackit version push
+         *
+         * @return void
+         */
+        public function trigger_version_push()
+        {
+            
         }
 
     }

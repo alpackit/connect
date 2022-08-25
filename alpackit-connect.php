@@ -99,7 +99,7 @@ if (!class_exists('PluginIgniter')) {
             }
 
             //Admin ui: 
-            Admin\Menu::get_instance();
+            //Admin\Menu::get_instance();
             Admin\Assets::get_instance();
             Admin\Events::get_instance();
 

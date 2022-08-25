@@ -39,12 +39,12 @@
         public function post( $url, $args = [] )
         {
             //prepare the body of our request:
-            $data = $this->add_authentication( $args );
+            $data = $this->sanitize_data( $args );
             
+            $slug = $url;
             $request = wp_remote_post( $this->complete_url( $url ), $data );
-
             $body = wp_remote_retrieve_body( $request );
-  
+
             if( is_wp_error( $request ) ){
                 throw new \Exception( $request->get_error_message() );
 
@@ -65,28 +65,45 @@
          * @param array $args
          * @return array
          */
-        public function add_authentication( $args ) : array
+        public function sanitize_data( $args ) : array
         {
             $data = [];
             $data['method'] = 'POST';
             $data['body'] = $args;
 
             //add authentication information:
-            $data['body']['api_key'] = env('ALPACKIT_API_KEY') ?? '';
-            $data['body']['api_secret'] = env('ALPACKIT_API_SECRET') ?? '';
-            $data['body']['alpackit_user_id'] = $this->get_user_id();
+            $data = $this->add_authentication( $data );
 
             //expect json to return
             $data['headers']['content-type'] = 'application/json';
-            
+            $data['body'] = json_encode( $data['body'] );
+
+            //return
+            return $data;
+        }
+
+
+        /**
+         * Add the authentication
+         *
+         * @param array $data
+         * @return array
+         */
+        public function add_authentication( $data )
+        {
+            $data['body']['api_key'] = env('ALPACKIT_API_KEY') ?? '';
+            $data['body']['api_secret'] = env('ALPACKIT_API_SECRET') ?? '';
+            $data['body']['alpackit_user_id'] = $this->get_user_id();
+        
             //set the access token if we have it:
             $access_token = get_option('alpackit_access_token', false );
             if( $access_token !== false && !is_null( $access_token ) && $access_token !== '' ){
-                $data['headers']['Authorization'] = 'Bearer '.$access_token;
+                $data['headers']['authorization'] = 'Bearer '.$access_token;
             }
 
             return $data;
         }
+
 
         
         /**

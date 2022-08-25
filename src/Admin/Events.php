@@ -13,6 +13,11 @@
         }
 
 
+        /**
+         * Check if we need to create a bucket
+         *
+         * @return void
+         */
         public function check_bucket()
         {
             $bucket = get_option('alpackit_bucket', '' );
@@ -32,5 +37,6 @@
                 }
             }
         }
+
     
     }
