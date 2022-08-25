@@ -55,11 +55,7 @@
         public function push()
         {
             $data = [
-                'packits' => [
-                    'advanced-custom-fields' => '5.12.5',
-                    'loco-translate' => '3.6.2',
-                    'wordpress-seo' => '219.6'
-                ]
+                'packits' => $this->data
             ];
 
             //push plugin versions: 

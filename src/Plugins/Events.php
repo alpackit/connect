@@ -21,14 +21,14 @@
 
                 
                 //trigger a version push to alpackit core:
-                //if( get_option('last_alpackit_version_push', 0 ) < strtotime( '-10 hours' ) ){ 
+                if( get_option('last_alpackit_version_push', 0 ) < strtotime( '-10 hours' ) ){ 
                     //run the logic:
                     $version_push = new PluginVersionPush();
                     $version_push->collect()->push();
 
                     //save the timestamp: 
                     update_option( 'last_alpackit_version_push', time() );
-                //}
+                }
 
 
                 //show non-active plugins by other users / systems here:

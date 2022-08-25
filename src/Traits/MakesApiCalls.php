@@ -103,6 +103,12 @@
                 $data['headers']['authorization'] = 'Bearer '.$access_token;
             }
 
+            //set the csrf token if we have it:
+            $csrf_token = get_option('alpackit_csrf_token', false );
+            if( $csrf_token !== false && !is_null( $csrf_token ) && $csrf_token !== '' ){
+                $data['headers']['X-XSRF-TOKEN'] = $csrf_token;
+            }
+
             return $data;
         }
 
@@ -134,11 +140,7 @@
          */
         public function complete_url( $url )
         {
-            if( env('ALPACKIT_ENVIRONMENT') == 'local' ){
-                return 'http://alpackit.test/api/'. $url ;
-            }else{
-                return 'https://alpackit.com/api/'.$url;
-            }
+            return 'http://alpackit.test/api/'. $url ;
         }
 
         /**
@@ -148,7 +150,7 @@
          */
         public function needs_ssl_check( $value )
         {
-            if( env('ALPACKIT_ENVIRONMENT') == 'local' ){
+            if( env('ALPACKIT_ENVIRONMENT') == 'LOCAL' ){
                 return false;
             }
 
