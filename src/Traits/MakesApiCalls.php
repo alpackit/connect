@@ -11,6 +11,8 @@
          */
         public function call( $url, $data = [] )
         {
+            add_filter('https_ssl_verify', [ $this, 'needs_ssl_check' ]);
+
             //place the call:
             try{
                 $response = $this->post( $url, $data );
@@ -44,7 +46,6 @@
             $slug = $url;
             $request = wp_remote_post( $this->complete_url( $url ), $data );
             $body = wp_remote_retrieve_body( $request );
-            
 
             if( is_wp_error( $request ) ){
                 throw new \Exception( $request->get_error_message() );
@@ -133,6 +134,24 @@
          */
         public function complete_url( $url )
         {
-            return 'http://alpackit.test/api/'. $url ;
+            if( env('ALPACKIT_ENVIRONMENT') == 'local' ){
+                return 'http://alpackit.test/api/'. $url ;
+            }else{
+                return 'https://alpackit.com/api/'.$url;
+            }
+        }
+
+        /**
+         * Disable SSL check on local
+         *
+         * @return void
+         */
+        public function needs_ssl_check( $value )
+        {
+            if( env('ALPACKIT_ENVIRONMENT') == 'local' ){
+                return false;
+            }
+
+            return $value;
         }
     }
