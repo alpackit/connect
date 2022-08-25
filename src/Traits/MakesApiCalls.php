@@ -121,7 +121,7 @@
          */
         public function get_user_id()
         {
-            $user_id = get_current_user_id();
+            $user_id = get_current_user_id() ?? 1;
             $alpackit_user = get_user_meta( $user_id, 'alpackit_user_id', true );
             
             if( !$alpackit_user ){

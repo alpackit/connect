@@ -98,12 +98,14 @@ if (!class_exists('PluginIgniter')) {
                 $this->set_media_offloading();
             }
 
+            //CLI
+            Cli\Register::get_instance();
+
             //Admin ui: 
-            //Admin\Menu::get_instance();
             Admin\Assets::get_instance();
             Admin\Events::get_instance();
 
-            //General
+            //Syncing
             Plugins\Events::get_instance();
             Content\Events::get_instance();
             
