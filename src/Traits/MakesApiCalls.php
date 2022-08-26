@@ -33,10 +33,11 @@
 
             //unauthenticated request: 
             }catch( UnauthenticatedRequestException $error ){
-                dd( $error );
+                //echo $error ;
+                
                 
             }catch( \Throwable $error ){
-                dd( $error );
+                //dd( $error );
             
             }
 
@@ -59,8 +60,7 @@
             
             $slug = $url;
             $request = wp_remote_post( $this->complete_url( $url ), $data );
-            $body = wp_remote_retrieve_body( $request );
-
+            
             if( is_wp_error( $request ) ){
                 throw new \Exception( $request->get_error_message() );
 
@@ -68,7 +68,6 @@
             }else if( isset( $request['body']['message'] ) && $request['body']['message'] == 'Unauthenticated' ){
                 throw new UnauthenticatedRequestException();
             }
-
 
             //turn it into an object:
             return json_decode( $request['body'] );

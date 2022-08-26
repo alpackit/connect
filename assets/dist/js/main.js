@@ -1,8 +1,8 @@
 jQuery( document ).ready( function( $ ){
 
     //sync media
-    if ( $('#sync-media').length > 0 ){
-        $('#sync-media').on('click tap', start_media_sync );
+    if( $('#sync-packits').length > 0 ){
+        $('#sync-packits').on('click tap', start_packit_sync );
     } 
 
     $('#reveal-unsynced-data').on( 'click tap', function(){
@@ -11,38 +11,74 @@ jQuery( document ).ready( function( $ ){
 
 });
 
+var alpackit_workflow_id = 0;
+var alpackit_sync_poll = 0;
 
-function start_media_sync(){
+function start_packit_sync(){
+
+    jQuery('#packit-update-selection').hide();
+    jQuery('#packit-update-progress').show();
 
     //set some updates
-    progress_update( 'Starting media sync' );
-    progress_update( 'Getting remote file list' );
+    progress_update( 'Starting packit sync' );
+
+    get_remote_file_list();
+
+    alpackit_sync_poll = setInterval( get_remote_file_list, 2000 );
+}
+
+function get_remote_file_list(){
 
     //fetch the remote file list:
-    var data = { 'action': 'get-remote-file-list' }
-    jQuery.post( ajaxurl, data, function( response ){
-        try{
-            
-            response = JSON.parse(response);
-            sync_media(response, 0);
+    var packits = [];
+    jQuery('.packit_id').each( function(){
+        packits.push( jQuery( this ).val() );
+    });
+    
+    var data = { 
+        'action': 'get-remote-file-list', 
+        'packits': packits,
+        'workflow_id': alpackit_workflow_id
+    }
+    
+    jQuery.post(ajaxurl, data, function (response) {
+        try {
 
-        }catch( error ){
-            console.log( error );
+            response = JSON.parse(response);
+
+            //set workflow id: 
+            if( typeof( response.workflow_id ) !== 'undefined' && alpackit_workflow_id == 0 ){
+                alpackit_workflow_id = response.workflow_id;
+                progress_update('Getting remote file list');
+            
+            }else if( response.current_step === response.step_total ){
+
+                var list = JSON.parse( response.message );
+
+                clearInterval( alpackit_sync_poll );
+                //start going one-by one:
+                sync_packit( list, 0 );
+            }
+
+
+        } catch (error) {
+            console.log(error);
         }
     });
+
 }
 
 
 /**
- * Sync a single piece of media
+ * Sync a single packit
  * @param Json list 
  * @param int cursor 
  */
-function sync_media( list, cursor ){
+function sync_packit( list, cursor ){
     
     var data = { 
-        'action': 'sync-media',
-        'file_list': JSON.stringify( list ),
+        'action': 'sync-packit',
+        'packit_list': JSON.stringify( list ),
         'cursor': cursor
     }
 
@@ -50,17 +86,18 @@ function sync_media( list, cursor ){
 
         try{
             response = JSON.parse(response);
+            console.log( response );
 
-            //give update:
-            progress_update( response.message, response.error );
+           //give update:
+            //progress_update( response.message, response.error );
 
             //set bar:
-            progress_bar( cursor, list.files.length );
+            //progress_bar( cursor, list.length );
 
             //iterate
-            if( cursor < list.files.length ){
+            if( cursor < list.length ){
                 cursor++;
-                sync_media( list, cursor );
+                sync_packit( list, cursor );
             
             }else{
                 progress_update( 'Sync done' );

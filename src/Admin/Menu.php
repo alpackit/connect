@@ -3,8 +3,7 @@
     namespace Alpackit\Connect\Admin;
 
     use Alpackit\Connect\Contracts\EventListener;
-    use Alpackit\Connect\Views\PullContent;
-    use Alpackit\Connect\Views\PullMedia;
+    use Alpackit\Connect\Views\SyncPackits;
 
     class Menu extends EventListener{
 
@@ -16,16 +15,20 @@
         public function listen()
         {
             // Admin bar: 
-            add_action( 'init', [ $this, 'handle_request' ]);
-            add_action( 'admin_bar_menu', [ $this, 'register_admin_bar' ], 900 );
+            //add_action( 'init', [ $this, 'handle_request' ]);
+            //add_action( 'admin_bar_menu', [ $this, 'register_admin_bar' ], 900 );
             add_action( 'admin_menu', [ $this, 'register_pages' ], 900 );
         }
 
-
+        /**
+         * Register admin pages
+         *
+         * @return void
+         */
         public function register_pages()
         {
             //add menu page: 
-            add_menu_page( 
+            /*add_menu_page( 
                 'Alpackit', 
                 __( 'Alpackit', 'alpackit-connect' ), 
                 'manage_options', 
@@ -33,32 +36,19 @@
                 '__return_false', 
                 'dashicons-pets',
                 150
-            );
+            );*/
 
 
             add_submenu_page( 
-                'alpackit',
-                __( 'Pull content', 'alpackit-connect' ),
-                __( 'Pull content', 'alpackit-connect' ), 
+                'index.php',
+                __( 'Sync packits', 'alpackit-connect' ),
+                __( 'Sync packits', 'alpackit-connect' ), 
                 'manage_options', 
-                'pull-content', 
+                'sync-packits', 
                 function(){
-                    ( new PullContent() )->render();
+                    ( new SyncPackits() )->render();
                 },
                 1
-            );
-
-
-            add_submenu_page( 
-                'alpackit',
-                __( 'Pull media', 'alpackit-connect' ),
-                __( 'Pull media', 'alpackit-connect' ), 
-                'manage_options', 
-                'pull-media', 
-                function(){
-                    ( new PullMedia() )->render();
-                },
-                2
             );
         }
 

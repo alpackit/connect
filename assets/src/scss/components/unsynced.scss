@@ -2,6 +2,48 @@
     display: none;
 }
 
+.packit-list{
+    padding: 20px 0;
+}
+
+
+#packit-update-progress{ display: none; }
+
+.packit-listing{
+    display: flex; 
+    flex-flow: row wrap;
+    padding: 0 0 10px 25px;
+    margin: 10px 0 0 0;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+
+    &:last-of-type{
+        border-bottom: 0;
+    }
+
+    .packit-header{
+        flex: 1 0 100%;
+        display: flex;
+        align-items: center;
+        margin-left: -25px;
+
+        input{
+            margin-right: 8px;
+        }
+    }
+
+    p{
+        margin: 3px 0 0 0;
+    }
+
+    .version{
+        display: inline-block;
+        padding: 2px 5px;
+        border-radius: 10px;
+        font-size: .75rem;
+        background: rgb(239, 246, 255);
+    }
+}
+
 .packit-warning{
     padding-bottom: 15px;
     h3{

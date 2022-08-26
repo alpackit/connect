@@ -102,8 +102,12 @@ if (!class_exists('PluginIgniter')) {
             Cli\Register::get_instance();
 
             //Admin ui: 
+            Admin\Menu::get_instance();
             Admin\Assets::get_instance();
             Admin\Events::get_instance();
+
+            //Ajax:
+            Ajax\Register::get_instance();
 
             //Syncing
             Plugins\Events::get_instance();

@@ -2,14 +2,7 @@
 
     namespace Alpackit\Connect\Contracts;
 
-    //use Alpackit\Connect\Traits\DisplaysErrors;
-    use \Alpackit\Connect\PluginIgniter;
-    use \Alpackit\Connect\Actions\RequestAccessToken;
-
     abstract class View{
-
-         //use DisplaysErrors;
-
 
         /**
          * Template file
@@ -57,15 +50,6 @@
          */
         public function validate() : bool
         {
-            $access_token = \get_option('alpackit_access_token', false );
-            //if there's no access token, request that first:
-            if( !$access_token ){
-
-                $access_token = ( new RequestAccessToken() )->get_access_token();
-                update_option( 'alpackit_access_token', $access_token );
-
-            }
-
             return true;
         }
 

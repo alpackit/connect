@@ -21,7 +21,7 @@
         {
             $this->endpoints = [
                 'get_remote_file_list'    => GetRemoteFileList::get_instance(),
-                'sync_media'              => SyncMedia::get_instance(),
+                'sync_packit'             => SyncPackit::get_instance()
             ];
         }
 
