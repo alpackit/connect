@@ -22,9 +22,12 @@
             <button class="button button-primary" id="sync-packits">Sync selected packits</button>
         </div>
     </div>
-    <div id="packit-update-progress">
-        <?php get_alpackit_template( 'components/progress-bar' );?>
+    <div id="packit-update-progress" class="update-progress">
+        
         <?php get_alpackit_template( 'components/progress-list' );?>
     </div>
-
+    <div class="loader" id="alpackit-loader">
+        <span class="label">Working...</span>
+        <div class="alpaca-loader"></div>
+    </div>
 </div>

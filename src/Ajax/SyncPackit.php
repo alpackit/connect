@@ -24,12 +24,32 @@
             $response = ( new Updater( $data ) )->update();
 
             if( is_array( $response ) ){
+
+                $this->no_longer_unsynced( $data );
                 $this->message( 'Packit '.$data['slug'].' updated.');
             }else{
                 $this->error( 'somethign wieakls ' );
             }
 
             
+        }
+
+        /**
+         * Save the fact that we updated this packit
+         *
+         * @param array $data
+         * @return void
+         */
+        public function no_longer_unsynced( $data )
+        {
+            $unsynced = get_option('unsynced_packits', [] );
+            foreach( $unsynced as $key => $synced ){
+                if( $synced['id'] == $data['origin_id'] ){
+                    unset( $unsynced[ $key ] );
+                }
+            }
+
+            update_option( 'unsynced_packits', $unsycned );
         }
 
     }

@@ -132,3 +132,26 @@ button.link {
 button.link:hover {
   color: #2271b1;
 }
+
+.alpackit-container {
+  position: relative;
+}
+.alpackit-container .loader {
+  display: none;
+  background: rgb(185, 28, 28);
+  padding: 1px;
+  border-radius: 50px;
+  border: 5px solid white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 7px;
+  right: 7px;
+}
+.alpackit-container .loader .label {
+  position: absolute;
+  right: 103%;
+  top: 27px;
+  background: white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  padding: 4px 8px;
+}

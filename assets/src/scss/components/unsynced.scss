@@ -79,3 +79,28 @@ button.link{
         color: #2271b1;
     }
 }
+
+.alpackit-container{
+    position: relative;
+    .loader{
+        display: none;
+        background: $red;
+        padding: 1px;
+        border-radius: 50px;
+        border: 5px solid white;
+        box-shadow: 0 0 5px rgba(0,0,0,.3);
+        position: absolute;
+        top: 7px;
+        right: 7px;
+    
+        .label {
+            position: absolute;
+            right: 103%;
+            top: 27px;
+            background: white;
+            box-shadow: 0 0 4px rgba(0,0,0,.3);
+            padding: 4px 8px;
+        }
+
+    }
+}

@@ -36,15 +36,14 @@
         {
             $response = [];
             //download the zip first: 
-            $package = str_replace( '/download', '/export', $this->packit['download_path'] );
-            $package = str_replace( 'https://', 'http://', $this->packit['download_path'] );
+            $package = str_replace( 'https://', 'http://', $this->packit['download_link'] );
             $local_path = ABSPATH . $this->packit['local_path'].'.zip';
 
             //add zip to local:
             $result = file_put_contents( $local_path, file_get_contents( $package ) );
             $response[] = ['message' => 'file copy', 'result' => $result ];
 
-            $packit_root = ABSPATH . str_replace( '/'.$this->packit['slug'], '', $this->packit['local_path'] );
+            $packit_root = ABSPATH . $this->packit['folder'];
             $packit_path = ABSPATH . $this->packit['local_path'];
 
             $move = $this->system->move( $packit_path, $packit_path.'_2' );

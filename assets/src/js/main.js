@@ -13,6 +13,7 @@ jQuery( document ).ready( function( $ ){
 
 var alpackit_workflow_id = 0;
 var alpackit_sync_poll = 0;
+var alpackit_sync_last_update = '';
 
 function start_packit_sync(){
 
@@ -23,6 +24,7 @@ function start_packit_sync(){
     progress_update( 'Starting packit sync' );
 
     get_remote_file_list();
+    show_alpackit_loader();
 
     alpackit_sync_poll = setInterval( get_remote_file_list, 2000 );
 }
@@ -50,6 +52,13 @@ function get_remote_file_list(){
             if( typeof( response.workflow_id ) !== 'undefined' && alpackit_workflow_id == 0 ){
                 alpackit_workflow_id = response.workflow_id;
                 progress_update('Getting remote file list');
+            
+            }else if( response.current_step !== response.step_total ){
+
+                if (alpackit_sync_last_update !== response.message) {
+                    progress_update(response.message);
+                    alpackit_sync_last_update = response.message;
+                }
             
             }else if( response.current_step === response.step_total ){
 
@@ -86,13 +95,13 @@ function sync_packit( list, cursor ){
 
         try{
             response = JSON.parse(response);
-            console.log( response );
 
             //give update:
-            progress_update( response.message, response.error );
+            var error = false;
+            progress_update( response.message, error );
 
             //set bar:
-            progress_bar( cursor, list.length );
+            //progress_bar( cursor, list.length );
 
             //iterate
             if( cursor < list.length ){
@@ -101,6 +110,8 @@ function sync_packit( list, cursor ){
             
             }else{
                 progress_update( 'Sync done' );
+                hide_alpackit_loader();
+
             }
 
         }catch( error ){
@@ -126,4 +137,12 @@ function progress_update( string, error = false){
 function progress_bar( cursor, max ){
     var percent = cursor / ( max - 1 ) * 100;
     jQuery('#progress').css({ 'width': percent + '%' });
+}
+
+function show_alpackit_loader(){
+    jQuery('#alpackit-loader').show();
+}
+
+function hide_alpackit_loader(){
+    jQuery('#alpackit-loader').hide();
 }
