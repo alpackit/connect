@@ -153,7 +153,11 @@
          */
         public function complete_url( $url )
         {
-            return 'http://alpackit.test/api/'. $url ;
+            if( !is_null( env('ALPACKIT_CONNECT_OVERRIDE_URL' ) ) ){
+                return env( 'ALPACKIT_CONNECT_OVERRIDE_URL' );
+            }
+
+            return 'https://app.alpackit.com/api/'. $url ;
         }
 
         /**

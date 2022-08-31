@@ -17,10 +17,12 @@
 <ul class="alpackit-update-overview">
 <?php 
     foreach( $unsynced as $packit ){
-        echo '<li>'.$packit['name'];
-        echo ' - <b>staging version:</b> '.$packit['pivot']->version;
-        echo ' - <b>local version:</b> '.$packit['local_version'];
-        echo '</li>';
+        if( is_array( $packit ) ){
+            echo '<li>'.$packit['name'];
+            echo ' - <b>staging version:</b> '.$packit['pivot']->version;
+            echo ' - <b>local version:</b> '.$packit['local_version'];
+            echo '</li>';
+        }
     }
 ?>
 <ul>
