@@ -49,7 +49,6 @@
             $move = $this->system->move( $packit_path, $packit_path.'_2' );
 
             $response[] = ['message' => 'move folder', 'result' => $move ];
-
             unzip_file( $local_path, $packit_root );
 
             $response[] = ['message' => 'file unzipped'];

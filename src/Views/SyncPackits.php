@@ -16,8 +16,9 @@
          */
         public function get_template_data() : Array
         {
+            $packits = get_option('unsynced_packits', [] );
             return [
-                'unsynced' => get_option('unsynced_packits', [] )
+                'unsynced' => $packits
             ];
         }
     }

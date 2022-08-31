@@ -44,6 +44,10 @@
         {
             $unsynced = get_option('unsynced_packits', [] );
             foreach( $unsynced as $key => $synced ){
+                if( !is_array( $synced ) ){
+                    $synced = (array)$synced;
+                }
+
                 if( $synced['id'] == $data['origin_id'] ){
                     unset( $unsynced[ $key ] );
                 }

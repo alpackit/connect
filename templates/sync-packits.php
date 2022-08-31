@@ -2,7 +2,13 @@
     <h2><?= __( 'Sync packits from staging', 'alpackit' );?></h2>
     <div id="packit-update-selection">
         <ul class="packit-list">
-            <?php foreach( $unsynced as $packit ):?>
+        <?php 
+                foreach( $unsynced as $packit ):
+                    if( !is_array( $packit ) ){
+                        $packit = (array) $packit;
+                    }
+                ?>
+            
             <li class="packit-listing">
                     <label class="packit-header">
                         <input type="checkbox" value="<?= $packit['id'];?>" class="packit_id" checked />
